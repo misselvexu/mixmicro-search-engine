@@ -14,14 +14,19 @@ env:
 
 jobs:
   tests:
+    runs-on: docker
     name: Tests on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-18.04, macos-latest, windows-latest]
     steps:
     - uses: actions/checkout@v2
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+        override: true
     - name: Cache dependencies
       uses: Swatinem/rust-cache@v1.3.0
     - name: Run cargo check without any default features
